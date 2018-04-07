@@ -21,5 +21,6 @@
 		"node": ">=6"
 	},
 	"dependencies": {
+		"mdns": "^2.3.4"
 	}
 }
