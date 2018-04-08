@@ -1,6 +1,6 @@
 # search-fasp-receivers
 
-**Search for Friendly Audio Streaming Protocol receivers in the local network.**
+**Search for [Friendly Audio Streaming Protocol](https://github.com/derhuerst/friendly-audio-streaming-protocol) receivers in the local network.**
 
 *Note*: `search-fasp-receivers` works only in Node, because it needs access to [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS) to find the receivers.
 

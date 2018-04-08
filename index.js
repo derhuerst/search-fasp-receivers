@@ -28,6 +28,26 @@ const search = (timeout, onService, onTimeout) => {
 	return stopSearching
 }
 
+const searchByFn = (isMatch, timeout, cb) => {
+	let found = false
+	const onService = (srv) => {
+		if (!found && isMatch(srv)) {
+			stop()
+			found = true
+			cb(null, srv)
+		}
+	}
+
+	const err = new Error('Search timed out.')
+	err.timeout = true
+	const onTimeout = () => {
+		if (!found) cb(err)
+	}
+
+	const stop = search(timeout, onService, onTimeout)
+	return stop
+}
+
 const searchById = (id, timeout, cb) => {
 	if ('string' !== typeof id || !id) {
 		throw new Error('id must be a non-empty string.')
@@ -36,24 +56,8 @@ const searchById = (id, timeout, cb) => {
 		cb = timeout
 		timeout = null
 	}
-
-	const onService = (srv) => {
-		if (!found && srv && srv.txtRecord && srv.txtRecord.id === id) {
-			stop()
-			found = true
-			cb(null, srv)
-		}
-	}
-
-	const err = new Error(`Search for receiver ${id} timed out.`)
-	err.timeout = true
-	const onTimeout = () => {
-		if (!found) cb(err)
-	}
-
-	let found = false
-	const stop = search(timeout, onService, onTimeout)
-	return stop
+	const isMatch = srv => srv && srv.txtRecord && srv.txtRecord.id === id
+	return searchByFn(isMatch, timeout, cb)
 }
 
 const searchByName = (name, timeout, cb) => {
@@ -64,24 +68,8 @@ const searchByName = (name, timeout, cb) => {
 		cb = timeout
 		timeout = null
 	}
-
-	const onService = (srv) => {
-		if (!found && srv && srv.name === name) {
-			stop()
-			found = true
-			cb(null, srv)
-		}
-	}
-
-	const err = new Error(`Search for receiver "${name}" timed out.`)
-	err.timeout = true
-	const onTimeout = () => {
-		if (!found) cb(err)
-	}
-
-	let found = false
-	const stop = search(timeout, onService, onTimeout)
-	return stop
+	const isMatch = srv => srv && srv.name === name
+	return searchByFn(isMatch, timeout, cb)
 }
 
 search.byId = searchById
