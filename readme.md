@@ -22,9 +22,10 @@ npm install search-fasp-receivers
 ```js
 const search = require('search-fasp-receivers')
 
+const version = '2' // FASP version
 const timeout = 5 * 1000
 
-search.byName('alice-fasp-receiver', timeout, (err, service) => {
+search.byName('alice-fasp-receiver', version, timeout, (err, service) => {
 	if (err) console.error(err)
 	else console.log('found', service.host, service.port)
 })
@@ -33,10 +34,20 @@ search.byName('alice-fasp-receiver', timeout, (err, service) => {
 If you know the ID of a receiver, it is safer to search using this instead of the name:
 
 ```js
-search.byId('86af5e4a3c62635d', timeout, (err, service) => {
+search.byId('86af5e4a3c62635d', version, timeout, (err, service) => {
 	// …
 })
 ```
+
+
+## API
+
+```js
+search.byId(id, version, [timeout], cb)
+search.byName(name, version, [timeout], cb)
+```
+
+A `version` version of `null` means any version.
 
 
 ## Contributing

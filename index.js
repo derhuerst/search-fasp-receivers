@@ -48,27 +48,39 @@ const searchByFn = (isMatch, timeout, cb) => {
 	return stop
 }
 
-const searchById = (id, timeout, cb) => {
+const searchById = (id, version, timeout, cb) => {
 	if ('string' !== typeof id || !id) {
 		throw new Error('id must be a non-empty string.')
 	}
+	if (('string' !== typeof version || !version) && version !== null) {
+		throw new Error('version must be a non-empty string of null.')
+	}
 	if ('function' === typeof timeout) {
 		cb = timeout
 		timeout = null
 	}
-	const isMatch = srv => srv && srv.txtRecord && srv.txtRecord.id === id
+	const isMatch = (srv) => {
+		const r = srv.txtRecord
+		return r && r.id === id && r.version === version
+	}
 	return searchByFn(isMatch, timeout, cb)
 }
 
-const searchByName = (name, timeout, cb) => {
+const searchByName = (name, version, timeout, cb) => {
 	if ('string' !== typeof name || !name) {
 		throw new Error('name must be a non-empty string.')
+	}
+	if (('string' !== typeof version || !version) && version !== null) {
+		throw new Error('version must be a non-empty string of null.')
 	}
 	if ('function' === typeof timeout) {
 		cb = timeout
 		timeout = null
 	}
-	const isMatch = srv => srv && srv.name === name
+	const isMatch = (srv) => {
+		const r = srv.txtRecord
+		return srv.name === name && r && r.version === version
+	}
 	return searchByFn(isMatch, timeout, cb)
 }
 
