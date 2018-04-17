@@ -80,7 +80,7 @@ const searchByName = (name, version, timeout, cb) => {
 		throw new Error('name must be a non-empty string.')
 	}
 	if (('string' !== typeof version || !version) && version !== null) {
-		throw new Error('version must be a non-empty string of null.')
+		throw new Error('version must be a non-empty string or null.')
 	}
 	if ('function' === typeof timeout) {
 		cb = timeout

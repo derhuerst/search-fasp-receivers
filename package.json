@@ -1,7 +1,7 @@
 {
 	"name": "search-fasp-receivers",
 	"description": "Search for Friendly Audio Streaming Protocol receivers in the local network.",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"main": "index.js",
 	"files": [
 		"index.js"
