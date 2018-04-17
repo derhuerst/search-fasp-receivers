@@ -12,7 +12,16 @@ const search = (timeout, onService, onTimeout) => {
 		timeout = null
 	}
 
-	const browser = new mdns.Browser(mdns.tcp('fasp'))
+	// https://github.com/agnat/node_mdns/issues/130#issuecomment-120731155
+	const seq = [
+		mdns.rst.DNSServiceResolve(),
+		('DNSServiceGetAddrInfo' in mdns.dns_sd
+			? mdns.rst.DNSServiceGetAddrInfo()
+			: mdns.rst.getaddrinfo({families: [4]})
+		),
+		mdns.rst.makeAddressesUnique()
+	]
+	const browser = new mdns.Browser(mdns.tcp('fasp'), {resolverSequence: seq})
 	browser.on('serviceUp', onService)
 
 	browser.start()
